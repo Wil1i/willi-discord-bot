@@ -1,0 +1,17 @@
+{
+  "name": "willi-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for Willi Team",
+  "main": "index.js",
+  "scripts": {
+    "test": "node .",
+    "official": "node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "discord.js": "^13.1.0",
+    "quick.db": "^7.1.3"
+  }
+}
