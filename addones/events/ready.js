@@ -7,6 +7,14 @@ module.exports = {
   name: "ready",
   description: "When bot is ready",
   execute(client) {
+    console.clear();
+    console.log(
+      red("["),
+      green("+"),
+      red("]==============================["),
+      green("+"),
+      red("]\n\n")
+    );
     console.log(
       red(`[STATUS]`),
       green(`Bot `),
@@ -132,5 +140,13 @@ module.exports = {
       avatarURL: client.user.displayAvatarURL(),
       embeds: [logEmbed],
     });
+
+    console.log(
+      red("\n\n["),
+      green("+"),
+      red("]==============================["),
+      green("+"),
+      red("]\n\n")
+    );
   },
 };
