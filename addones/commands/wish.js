@@ -11,21 +11,34 @@ module.exports = {
 
     const userMention = message.mentions.users.first();
     const messageArry = message.content.split(" ");
-    const wishEmbed = new MessageEmbed().setColor(color);
+    let wishEmbed = new MessageEmbed().setColor(color);
 
     if (userMention) {
-      if (!db.has(`wish_${userMention.id}`))
-        return message.channel.send(">>> There is not any items");
+      wishEmbed.setAuthor(`Wish List for ${userMention.username}`);
+      if (!db.has(`wish_${userMention.id}`)) {
+        wishEmbed.setDescription("There is not any items");
+        return message.channel.send({ embeds: [wishEmbed] });
+      }
       const wishList = db.get(`wish_${userMention.id}`);
-      let text = ">>> ";
+      let counter = 0;
+      let allCounts = 0;
 
       for (const item of wishList) {
-        // Create an embed and send wish lists
-        text += `**${item.name}** => ${item.link}\n\n`;
+        const { name, link } = item;
+
+        if (counter == 24) {
+          message.channel.send({ embeds: [wishEmbed] });
+          wishEmbed = new MessageEmbed().setColor(color);
+          counter = 0;
+        }
+        wishEmbed.addField(name, link);
+        counter++;
+        allCounts++;
       }
-      if (text == ">>> ")
-        return message.channel.send(">>> There is not any items");
-      return message.channel.send(text);
+      if (wishList.length == 0)
+        wishEmbed.setDescription("There is not any items");
+      wishEmbed.setFooter(`${allCounts} Items found`);
+      return message.channel.send({ embeds: [wishEmbed] });
     } else if (messageArry[2]) {
       if (messageArry[1].toLowerCase() == "set") {
         if (messageArry[3]) {
@@ -59,21 +72,49 @@ module.exports = {
         } else {
           wishEmbed.setDescription(`You don't have **wishlist**`);
         }
+      } else if (messageArry[1].toLowerCase() == "reset") {
+        const wishCount = db.get(`wish_${message.author.id}`).size;
+        db.delete(`wish_${message.author.id}`);
+        wishEmbed.setDescription(
+          `Your wish list with **${wishCount}** wishes successfully deleted.`
+        );
+      } else {
+        wishEmbed.setDescription(
+          `**SYNTAX**: ${db.get("prefix")}${
+            this.name
+          } [SET/DEL/Mention] {[Item Name] [Link]}`
+        );
       }
     } else {
-      if (!db.has(`wish_${message.author.id}`))
-        return message.channel.send(">>> There is not any items");
+      wishEmbed.setDescription(
+        `Your Wish List`,
+        message.author.displayAvatarURL({ dynamic: true })
+      );
+      if (!db.has(`wish_${message.author.id}`)) {
+        wishEmbed.setDescription("There is not any items");
+        return message.channel.send({ embeds: [wishEmbed] });
+      }
       // Return wish list for user
       const wishList = db.get(`wish_${message.author.id}`);
-      let text = ">>> ";
+      let counter = 0;
+      let allCounts = 0;
 
       for (const item of wishList) {
-        // Create an embed and send wish lists
-        text += `**${item.name}** => ${item.link}\n\n`;
+        const { name, link } = item;
+
+        if (counter == 24) {
+          message.channel.send({ embeds: [wishEmbed] });
+          wishEmbed = new MessageEmbed().setColor(color);
+          counter = 0;
+        }
+        wishEmbed.addField(name, link);
+        counter++;
+        allCounts++;
       }
-      if (text == ">>> ")
-        return message.channel.send(">>> There is not any items");
-      return message.channel.send(text);
+      if (wishList.length == 0)
+        wishEmbed.setDescription("There is not any items");
+      wishEmbed.setFooter(`${allCounts} Items found`);
+      return message.channel.send({ embeds: [wishEmbed] });
     }
     message.channel.send({ embeds: [wishEmbed] });
   },

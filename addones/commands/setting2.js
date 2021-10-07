@@ -5,6 +5,7 @@ const permission = require("../events/permission");
 module.exports = {
   name: "setting",
   description: "All setting about bot",
+  private: "true",
   execute(client, message) {
     const isUserAdministraotr = permission.execute(message, "administrator");
     if (!isUserAdministraotr) return;
@@ -27,6 +28,7 @@ module.exports = {
       left: "leftlog",
 
       "message-delete": "messageDelete",
+      color: "color",
     };
 
     // Color setting for embed
