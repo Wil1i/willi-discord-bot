@@ -39,16 +39,42 @@ module.exports = {
         wishEmbed.setDescription("There is not any items");
       wishEmbed.setFooter(`${allCounts} Items found`);
       return message.channel.send({ embeds: [wishEmbed] });
-    } else if (messageArry[2]) {
+    } else if (messageArry[1]) {
       if (messageArry[1].toLowerCase() == "set") {
         if (messageArry[3]) {
+          const link = messageArry[messageArry.length - 1];
+          if (!link.startsWith("https://") && !link.startsWith("http://")) {
+            wishEmbed.setDescription(
+              `Please enter a **link** for add a new wish`
+            );
+            return message.channel.send({ embeds: [wishEmbed] });
+          }
+          const name = message.content
+            .replace(` ${messageArry[messageArry.length - 1]}`, "")
+            .replace(`${messageArry[0]} ${messageArry[1]} `, "");
+
+          if (db.has(`wish_${message.author.id}`)) {
+            const wishes = db.get(`wish_${message.author.id}`);
+            const isWishEditable = wishes.filter((wish) => wish.name == name);
+            if (isWishEditable) {
+              const newWishes = wishes.filter((wish) => wish.name !== name);
+              db.set(`wish_${message.author.id}`, newWishes);
+              wishEmbed.setDescription(
+                `Item **${name}** successfully edited in your wishlist`
+              );
+            } else {
+              wishEmbed.setDescription(
+                `Item **${name}** successfully pushed in your wishlist`
+              );
+            }
+          } else
+            wishEmbed.setDescription(
+              `Item **${name}** successfully pushed in your wishlist`
+            );
           db.push(`wish_${message.author.id}`, {
-            name: messageArry[2],
-            link: messageArry[3],
+            name: name,
+            link: link,
           });
-          wishEmbed.setDescription(
-            `Item **${messageArry[2]}** successfully pushed in your wishlist`
-          );
         } else {
           wishEmbed.setDescription(
             `**SYNTAX**: ${db.get("prefix")}${
@@ -59,21 +85,27 @@ module.exports = {
       } else if (messageArry[1].toLowerCase() == "del") {
         if (db.has(`wish_${message.author.id}`)) {
           const wishes = db.get(`wish_${message.author.id}`);
-          const newItems = wishes.filter((item) => item.name != messageArry[2]);
+
+          const itemName = message.content.replace(
+            `${messageArry[0]} ${messageArry[1]} `,
+            ""
+          );
+
+          const newItems = wishes.filter((item) => item.name != itemName);
 
           if (newItems.length == wishes.length) {
-            wishEmbed.setDescription(`Item **${messageArry[2]}** is not exist`);
+            wishEmbed.setDescription(`Item **${itemName}** is not exist`);
           } else {
             db.set(`wish_${message.author.id}`, newItems);
             wishEmbed.setDescription(
-              `Item **${messageArry[2]}** successfully deleted`
+              `Item **${itemName}** successfully deleted`
             );
           }
         } else {
           wishEmbed.setDescription(`You don't have **wishlist**`);
         }
       } else if (messageArry[1].toLowerCase() == "reset") {
-        const wishCount = db.get(`wish_${message.author.id}`).size;
+        const wishCount = db.get(`wish_${message.author.id}`).size();
         db.delete(`wish_${message.author.id}`);
         wishEmbed.setDescription(
           `Your wish list with **${wishCount}** wishes successfully deleted.`
