@@ -1,13 +1,38 @@
 const Discord = require("discord.js");
 const db = require("quick.db");
-const config = require("../../config.json");
+const permission = require("../events/permission");
 
 module.exports = {
   name: "setting",
   description: "All setting about bot",
+  private: "true",
   execute(client, message) {
-    return; // Command is Disable
+    const isUserAdministraotr = permission.execute(message, "administrator");
+    if (!isUserAdministraotr) return;
 
+    // Any settings a user can change
+    const availableSetting = {
+      "channel-create": "channelCreate",
+      "channel-delete": "channelDelete",
+      "channel-pins-update": "channelPinsUpdate",
+      "channel-update": "channelUpdate",
+
+      "emoji-create": "emojiCreate",
+      "emoji-delete": "emojiDelete",
+      "emoji-update": "emojiUpdate",
+
+      "ban-add": "banAdd",
+      "ban-remove": "banRemove",
+
+      join: "joinlog",
+      left: "leftlog",
+
+      "message-delete": "messageDelete",
+      color: "color",
+      prefix: "prefix",
+    };
+
+    // Color setting for embed
     let color = db.get("color");
     if (db.has(`color_${message.guild.id}`)) {
       color = db.get(`color_${message.guild.id}`);
@@ -18,130 +43,45 @@ module.exports = {
       .setColor(color)
       .setFooter(client.user.username, client.user.displayAvatarURL());
 
-    if (!messageArry[3]) return;
+    if (!messageArry[2]) return; // Text minimum need to have a Command and Key and SubKey for run this command [!setting delete join]
 
     const key = messageArry[1].toLowerCase();
     const subKey = messageArry[2].toLowerCase();
-    const value = messageArry[3];
 
     if (key == "set") {
-      if (subKey == "join") {
-        db.set(`joinlog_${message.guild.id}`, value);
-        embed.setDescription(`**Join Log Successfully Set**.`);
-      } else if (subKey == "left") {
-        db.set(`leftlog_${message.guild.id}`, value);
-        embed.setDescription(`**Left Log Successfully Set**`);
-      } else if (subKey == "color" && value.startsWith("#")) {
-        if (message.author.id !== config.developerID) return;
-        const guildOnly = messageArry[4] == "true";
+      const value = messageArry[3];
+      if (!value) return; // Text in set need to have a Command and Key and SubKey and Value for run [!setting set join WebhookLink]
 
-        let oldColor = NaN;
-        if (db.has(`color_${message.guild.id}`)) {
-          oldColor = db.get(`color_${message.guild.id}`);
-        } else if (db.has("color")) {
-          oldColor = db.get("color");
+      // subKey need to be in availableSetting dict
+      if (availableSetting.hasOwnProperty(subKey)) {
+        let old = "Tarif Nashode.";
+        if (db.has(`${subKey}_${message.guild.id}`)) {
+          old = db.get(`${subKey}_${message.guild.id}`);
         }
-
-        if (guildOnly) {
-          db.set(`color_${message.guild.id}`, value);
-        } else {
-          db.set(`color`, value);
-        }
-
-        if (oldColor) {
-          embed.setDescription(
-            `**Color Successfully Changed**\n\n**Old Color** : ${oldColor}\n**New Color** : ${value}`
-          );
-        } else {
-          embed.setDescription(
-            `**Color Successfully Changed**\n\n**New Color** : ${value}`
-          );
-        }
-      } else if (subKey == "prefix") {
-        if (message.author.id !== config.developerID) return;
-        const guildOnly = messageArry[4] == "true";
-
-        let oldPrefix = NaN;
-        if (db.has(`prefix_${message.guild.id}`)) {
-          oldPrefix = db.get(`prefix_${message.guild.id}`);
-        } else if (db.has("prefix")) {
-          oldPrefix = db.get(`prefix`);
-        }
-
-        if (guildOnly) {
-          db.set(`prefix_${message.guild.id}`, value);
-        } else {
-          db.set(`prefix`, value);
-        }
-
-        if (oldPrefix) {
-          embed.setDescription(
-            `**Prefix Successfully Changed**\n\n**Old Prefix** : ${oldPrefix}\n**New Prefix** : ${value}`
-          );
-        } else {
-          embed.setDescription(
-            `**Prefix Successfully Changed**\n\n**New Prefix** : ${value}`
-          );
-        }
-      } else if (subKey == "status") {
-        if (message.author.id !== config.developerID) return;
-
-        let oldStatus = NaN;
-        if (db.has(`status-mode`)) oldStatus = db.get("status-mode");
-
-        db.set(`status`, value);
-        client.user.setActivity(value, {
-          type: db.get("status-mode"),
-        });
-
-        if (oldStatus !== NaN) {
-          embed.setDescription(
-            `**Status Successfully Changed**\n\n**Old**: ${oldStatus}\n\n**New**: ${value}`
-          );
-        } else {
-          embed.setDescription(
-            `**Status Successfully Changed**\n\n**New**: ${value}`
-          );
-        }
-      } else if (subKey == "status-mode") {
-        if (message.author.id !== config.developerID) return;
-
-        let oldStatus = NaN;
-        if (db.has(`status-mode`)) oldStatus = db.get("status-mode");
-
-        db.set(`status-mode`, value.toUpperCase());
-        client.user.setActivity(db.get("status"), {
-          type: value.toUpperCase(),
-        });
-
-        if (oldStatus !== NaN) {
-          embed.setDescription(
-            `**Status Mode Successfully Changed**\n\n**Old**: ${oldStatus}\n\n**New**: ${value}`
-          );
-        } else {
-          embed.setDescription(
-            `**Status Mode Successfully Changed**\n\n**New**: ${value}`
-          );
-        }
-      } else if (subKey == "channel") {
-        db.set(`channel_${message.guild.id}`, value);
-        embed.setDescription(`**Channel Create Log Successfully Set**`);
-      } else if (subKey == "emoji") {
-        db.set(`emoji_${message.guild.id}`, value);
-        embed.setDescription(`**Emoji Manage Log Successfully Set**`);
-      } else if (subKey == "ban") {
-        db.set(`ban_${message.guild.id}`, value);
-        embed.setDescription(`**Ban Log Successfully Set**`);
-      } else if (subKey == "guildinfo") {
-        db.set(`guildInfo`, value);
-        embed.setDescription(`**Guildcreate Log Successfully Set**`);
-      } else if (subKey == "message-delete") {
-        db.set(`messageDelete_${message.guild.id}`, value);
-        embed.setDescription(`**Message Delete Log Successfully Set**`);
-      } else if (subKey == "pin-update") {
-        db.set(`channelPinsUpdate_${message.guild.id}`, value);
-        embed.setDescription(`**Channel Pins Update Successfully Set**`);
+        db.set(`${subKey}_${message.guild.id}`, value);
+        embed.setDescription(
+          `**${subKey}** successfully set to **${value}**\n\n**Old**: ${old}\n**New**: ${value}`
+        );
+      } else {
+        embed.setDescription(`Setting **${subKey}** is not exist.`);
       }
+    } else if (key == "delete") {
+      // For delete subkey need to be in availableSetting dict and in database
+      if (
+        availableSetting.hasOwnProperty(subKey) &&
+        db.has(`${subKey}_${message.guild.id}`)
+      ) {
+        db.delete(`${subKey}_${message.guild.id}`);
+        embed.setDescription(`**${subKey}** successfully removed.`);
+      } else {
+        embed.setDescription(`Can't find this setting.`);
+      }
+    } else {
+      embed.setDescription(
+        `**SYNTAX** : ${db.get("prefix")}${
+          this.name
+        } [Key (set , delete , reset)] [SubKey (join , left , channel-delete)] [Value (Webhook Link or something)]`
+      );
     }
 
     message.channel.send({ embeds: [embed] });
