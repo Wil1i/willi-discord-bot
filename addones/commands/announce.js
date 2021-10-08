@@ -7,6 +7,8 @@ module.exports = {
   permission: "administrator",
   execute(client, message) {
     message.delete();
+
+    // Get color for embed (in every commands it's worked)
     let color = db.get(`color`);
     if (db.has(`color_${message.guild.id}`)) {
       color = db.get(`color_${message.guild.id}`);
@@ -17,6 +19,7 @@ module.exports = {
       .setColor(color)
       .setFooter(client.user.username, client.user.displayAvatarURL());
     if (messageArry[1]) {
+      // If announce command have text
       embed
         .setAuthor("Announcement", message.guild.iconURL())
         .setDescription(message.content.replace(messageArry[0], ""));

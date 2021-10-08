@@ -4,6 +4,7 @@ module.exports = {
   name: "rolepicker",
   description: "Role Picker command",
   execute(client, message) {
+    // with MessageActionRow we can use select menu and... MessageSelectMenu create a select menu for each req
     const jensiat = new MessageActionRow().addComponents(
       new MessageSelectMenu().setCustomId("gamepicker").addOptions(
         {

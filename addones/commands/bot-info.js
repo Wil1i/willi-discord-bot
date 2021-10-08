@@ -11,6 +11,7 @@ module.exports = {
       color = db.get(`color_${message.guild.id}`);
     }
 
+    // Get add time for bot (per day)
     let joineUser =
       Date.now() - message.guild.members.cache.get(client.user.id).joinedAt;
     let joineUserAt = Math.floor(joineUser / 86400000);

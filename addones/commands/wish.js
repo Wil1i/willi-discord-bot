@@ -14,8 +14,10 @@ module.exports = {
     let wishEmbed = new MessageEmbed().setColor(color);
 
     if (userMention) {
+      // User wants to get a list of wishes for another user
       wishEmbed.setAuthor(`Wish List for ${userMention.username}`);
       if (!db.has(`wish_${userMention.id}`)) {
+        // User is new in wish and have 0 wishes
         wishEmbed.setDescription("There is not any items");
         return message.channel.send({ embeds: [wishEmbed] });
       }
@@ -24,9 +26,11 @@ module.exports = {
       let allCounts = 0;
 
       for (const item of wishList) {
+        // In this loop, item return a name and link for each wish [ {name : "test wish", link : "https://www.amazon.com/"} ]
         const { name, link } = item;
 
         if (counter == 24) {
+          // For every 24 items in wish send a embed
           message.channel.send({ embeds: [wishEmbed] });
           wishEmbed = new MessageEmbed().setColor(color);
           counter = 0;
@@ -36,12 +40,15 @@ module.exports = {
         allCounts++;
       }
       if (wishList.length == 0)
+        // User used wish but now wish list is clear
         wishEmbed.setDescription("There is not any items");
       wishEmbed.setFooter(`${allCounts} Items found`);
       return message.channel.send({ embeds: [wishEmbed] });
     } else if (messageArry[1]) {
       if (messageArry[1].toLowerCase() == "set") {
+        // User wants to add/edit an item in wishlist
         if (messageArry[3]) {
+          // It's handle when user have a long name for wish item (exm : !wish set my fav mouse https://www.amazon.com/)
           const link = messageArry[messageArry.length - 1];
           if (!link.startsWith("https://") && !link.startsWith("http://")) {
             wishEmbed.setDescription(
@@ -54,6 +61,7 @@ module.exports = {
             .replace(`${messageArry[0]} ${messageArry[1]} `, "");
 
           if (db.has(`wish_${message.author.id}`)) {
+            // If user wants to edit a wish item
             const wishes = db.get(`wish_${message.author.id}`);
             const isWishEditable = wishes.filter((wish) => wish.name == name);
             if (isWishEditable) {
@@ -83,6 +91,7 @@ module.exports = {
           );
         }
       } else if (messageArry[1].toLowerCase() == "del") {
+        // User wants to delete an item from wish list
         if (db.has(`wish_${message.author.id}`)) {
           const wishes = db.get(`wish_${message.author.id}`);
 
@@ -105,6 +114,7 @@ module.exports = {
           wishEmbed.setDescription(`You don't have **wishlist**`);
         }
       } else if (messageArry[1].toLowerCase() == "reset") {
+        // User watns to reset all items in wishlist
         const wishCount = db.get(`wish_${message.author.id}`).size();
         db.delete(`wish_${message.author.id}`);
         wishEmbed.setDescription(
@@ -118,6 +128,7 @@ module.exports = {
         );
       }
     } else {
+      // User wants to get a list from self wishlist
       wishEmbed.setDescription(
         `Your Wish List`,
         message.author.displayAvatarURL({ dynamic: true })

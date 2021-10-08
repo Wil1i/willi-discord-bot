@@ -10,6 +10,7 @@ module.exports = {
       color = db.get(`color_${message.guild.id}`);
     }
 
+    // Get time for server born (per day)
     let serverCreated = Date.now() - message.guild.createdAt;
     let serverCreatedAt = Math.floor(serverCreated / 86400000);
 
