@@ -1,36 +1,15 @@
-const Discord = require("discord.js");
-const db = require("quick.db");
-const permission = require("../events/permission");
-
 module.exports = {
-  name: "setting",
-  description: "All setting about bot",
+  name: "config",
+  description: "Config bot",
   private: "true",
   execute(client, message) {
-    const isUserAdministraotr = permission.execute(message, "administrator");
-    if (!isUserAdministraotr) return;
-
-    // Any settings a user can change
     const availableSetting = {
-      "channel-create": "channelCreate",
-      "channel-delete": "channelDelete",
-      "channel-pins-update": "channelPinsUpdate",
-      "channel-update": "channelUpdate",
-
-      "emoji-create": "emojiCreate",
-      "emoji-delete": "emojiDelete",
-      "emoji-update": "emojiUpdate",
-
-      "ban-add": "banAdd",
-      "ban-remove": "banRemove",
-
-      join: "joinlog",
-      left: "leftlog",
-
-      "message-delete": "messageDelete",
+      prefix: "prefix",
+      color: "color",
+      status: "status",
+      "status-mode": "status-mode",
     };
 
-    // Color setting for embed
     let color = db.get("color");
     if (db.has(`color_${message.guild.id}`)) {
       color = db.get(`color_${message.guild.id}`);
