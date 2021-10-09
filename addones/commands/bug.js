@@ -1,15 +1,14 @@
 const { MessageEmbed } = require("discord.js");
-const db = require("quick.db");
+const guildConfig = require("../configItems/guild");
 const config = require("../../config.json");
 
 module.exports = {
   name: "bug",
   description: "Report a bug from bot",
   execute(client, message) {
-    let color = db.get(`color`);
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
+    let prefix = guildConfigs.prefix;
 
     const developer = client.users.cache.get(config.developerID);
     const messageArry = message.content.split(" ");
@@ -37,7 +36,7 @@ module.exports = {
         });
     } else {
       reportEmbed.setDescription(
-        `**SYNTAX**: ${db.get("prefix")}${this.name} [About Bug]`
+        `**SYNTAX**: ${prefix}${this.name} [About Bug]`
       );
     }
     message.channel.send(reportEmbed);

@@ -9,6 +9,7 @@ module.exports = {
       prefix: db.get(`prefix_${guild.id}`) || db.get(`prefix`),
       color: db.get(`color_${guild.id}`) || db.get(`color`),
     };
+
     return configs;
   },
 };

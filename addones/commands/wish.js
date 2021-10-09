@@ -1,13 +1,13 @@
 const { MessageEmbed } = require("discord.js");
 const db = require("quick.db");
+const guildConfig = require("../configItems/guild");
 
 module.exports = {
   name: "wish",
   execute(client, message) {
-    let color = db.get("color");
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
+    let prefix = guildConfigs.prefix;
 
     const userMention = message.mentions.users.first();
     const messageArry = message.content.split(" ");
@@ -85,9 +85,7 @@ module.exports = {
           });
         } else {
           wishEmbed.setDescription(
-            `**SYNTAX**: ${db.get("prefix")}${
-              this.name
-            } [SET] [Item Name] [Item Link]`
+            `**SYNTAX**: ${prefix}${this.name} [SET] [Item Name] [Item Link]`
           );
         }
       } else if (messageArry[1].toLowerCase() == "del") {
@@ -122,9 +120,7 @@ module.exports = {
         );
       } else {
         wishEmbed.setDescription(
-          `**SYNTAX**: ${db.get("prefix")}${
-            this.name
-          } [SET/DEL/Mention] {[Item Name] [Link]}`
+          `**SYNTAX**: ${prefix}${this.name} [SET/DEL/Mention] {[Item Name] [Link]}`
         );
       }
     } else {

@@ -1,15 +1,14 @@
 const { MessageEmbed } = require("discord.js");
-const db = require("quick.db");
+const guildConfig = require("../configItems/guild");
 const config = require("../../config.json");
 
 module.exports = {
   name: "bot-info",
   description: "Get all information about this bot",
   execute(client, message) {
-    let color = db.get(`color`);
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
+    let prefix = guildConfigs.prefix;
 
     // Get add time for bot (per day)
     let joineUser =
@@ -27,7 +26,7 @@ module.exports = {
       .addField("Bot Name", client.user.username, true)
       .addField("Bot Tag", client.user.discriminator, true)
       .addField("Bot ID", client.user.id, true)
-      .addField("Bot Prefix", db.get(`prefix`), true)
+      .addField("Bot Prefix", prefix, true)
       .addField("Bot Owner", `<@${config.developerID}>`, true)
       .addField("Servers", `${client.guilds.cache.size}`, true)
       .addField("Powered By", "**Discord.JS** V13", true)

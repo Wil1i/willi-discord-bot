@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const db = require("quick.db");
+const guildConfig = require("../configItems/guild");
 
 module.exports = {
   name: "announce",
@@ -9,10 +9,9 @@ module.exports = {
     message.delete();
 
     // Get color for embed (in every commands it's worked)
-    let color = db.get(`color`);
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
+    let prefix = guildConfigs.prefix;
 
     const messageArry = message.content.split(" ");
     const embed = new MessageEmbed()
@@ -25,7 +24,7 @@ module.exports = {
         .setDescription(message.content.replace(messageArry[0], ""));
     } else {
       embed.setDescription(
-        `**SYNTAX**: ${db.get("prefix")}${this.name} [Announcement Text]`
+        `**SYNTAX**: ${prefix}${this.name} [Announcement Text]`
       );
     }
 

@@ -1,15 +1,14 @@
 const { MessageEmbed } = require("discord.js");
-const db = require("quick.db");
+const guildConfig = require("../configItems/guild");
 
 module.exports = {
   name: "dm",
   description: "Send message to user dm",
   private: "true",
   execute(client, message) {
-    let color = db.get(`color`);
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
+    let prefix = guildConfigs.prefix;
 
     const userMention = message.mentions.users.first();
     const messageArry = message.content.split(" ");
@@ -37,7 +36,7 @@ module.exports = {
         });
     } else {
       embed.setDescription(
-        `**SYNTAX**: ${db.get("prefix")}${this.name} [UserMention] [Text]`
+        `**SYNTAX**: ${prefix}${this.name} [UserMention] [Text]`
       );
     }
     message.channel.send(embed);

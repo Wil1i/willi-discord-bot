@@ -1,15 +1,13 @@
 const Discord = require("discord.js");
-const db = require("quick.db");
+const guildConfig = require("../configItems/guild");
 
 module.exports = {
   name: "avatar",
   description: "Get user profile",
   execute(client, message) {
     // get color (if guild have spacial color it's changed to guild color)
-    let color = db.get("color");
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
 
     const userMention = message.mentions.users.first();
     const embed = new Discord.MessageEmbed()

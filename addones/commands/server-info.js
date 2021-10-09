@@ -1,14 +1,12 @@
 const { MessageEmbed } = require("discord.js");
-const db = require("quick.db");
+const guildConfig = require("../configItems/guild");
 
 module.exports = {
   name: "server-info",
   description: "Get Server Information",
   execute(client, message) {
-    let color = db.get(`color`);
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
 
     // Get time for server born (per day)
     let serverCreated = Date.now() - message.guild.createdAt;

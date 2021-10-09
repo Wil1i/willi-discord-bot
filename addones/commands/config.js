@@ -1,5 +1,6 @@
 const db = require("quick.db");
 const Discord = require("discord.js");
+const guildConfig = require("../configItems/guild");
 
 module.exports = {
   name: "config",
@@ -13,10 +14,9 @@ module.exports = {
       "status-mode": "status-mode",
     };
 
-    let color = db.get("color");
-    if (db.has(`color_${message.guild.id}`)) {
-      color = db.get(`color_${message.guild.id}`);
-    }
+    const guildConfigs = guildConfig.execute(client, message.guild);
+    let color = guildConfigs.color;
+    let prefix = guildConfigs.prefix;
 
     const messageArry = message.content.split(" ");
     const embed = new Discord.MessageEmbed()
@@ -58,9 +58,7 @@ module.exports = {
       }
     } else {
       embed.setDescription(
-        `**SYNTAX** : ${db.get("prefix")}${
-          this.name
-        } [Key (set , delete , reset)] [SubKey (join , left , channel-delete)] [Value (Webhook Link or something)]`
+        `**SYNTAX** : ${prefix}${this.name} [Key (set , delete , reset)] [SubKey (join , left , channel-delete)] [Value (Webhook Link or something)]`
       );
     }
 
