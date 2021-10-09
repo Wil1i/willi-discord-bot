@@ -6,11 +6,8 @@ const permission = require("../configItems/permission");
 module.exports = {
   name: "setting",
   description: "All setting about bot",
-  private: "true",
+  permission: "administrator",
   execute(client, message) {
-    const isUserAdministraotr = permission.execute(message, "administrator");
-    if (!isUserAdministraotr) return;
-
     // Any settings a user can change
     const availableSetting = {
       "channel-create": "channelCreate",
