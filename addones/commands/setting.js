@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const db = require("quick.db");
-const permission = require("../events/permission");
+const permission = require("../configItems/permission");
 
 module.exports = {
   name: "setting",
