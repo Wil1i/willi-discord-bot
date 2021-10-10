@@ -5,7 +5,7 @@ module.exports = {
   name: "server-info",
   description: "Get Server Information",
   execute(client, message) {
-    const guildConfigs = guildConfig.execute(client, message.guild);
+    const guildConfigs = guildConfig.get(client, message.guild);
     let color = guildConfigs.color;
 
     // Get time for server born (per day)

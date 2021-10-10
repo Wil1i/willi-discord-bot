@@ -179,9 +179,10 @@ client.on("messageCreate", (message) => {
 
   // If command have permission
   if (commandDetail.permission) {
-    const hasPermission = client.events
-      .get("permission")
-      .execute(message, commandDetail.permission.toUpperCase());
+    const hasPermission = require("./addones/configItems/permission").get(
+      message,
+      commandDetail.permission.toUpperCase()
+    );
     if (!hasPermission) return;
   }
 

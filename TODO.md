@@ -26,3 +26,4 @@
 - [x] Set prefix to syntaxes
 - [x] Have a function for get detail of every guild (like color, prefix and ...)
 - [ ] Fix permission for commands (some commands have not permission)
+- [ ] Event handler

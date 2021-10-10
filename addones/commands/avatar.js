@@ -6,7 +6,7 @@ module.exports = {
   description: "Get user profile",
   execute(client, message) {
     // get color (if guild have spacial color it's changed to guild color)
-    const guildConfigs = guildConfig.execute(client, message.guild);
+    const guildConfigs = guildConfig.get(client, message.guild);
     let color = guildConfigs.color;
 
     const userMention = message.mentions.users.first();

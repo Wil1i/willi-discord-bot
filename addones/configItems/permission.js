@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
   name: "permission",
   description: "Calculate permissions",
-  execute(message, targetPermission) {
+  get(message, targetPermission) {
     const s = {
       ADMINISTRATOR: message.member.permissions.has(
         Discord.Permissions.FLAGS.ADMINISTRATOR

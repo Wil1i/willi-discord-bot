@@ -6,7 +6,7 @@ module.exports = {
   description: "Send message to user dm",
   private: "true",
   execute(client, message) {
-    const guildConfigs = guildConfig.execute(client, message.guild);
+    const guildConfigs = guildConfig.get(client, message.guild);
     let color = guildConfigs.color;
     let prefix = guildConfigs.prefix;
 
