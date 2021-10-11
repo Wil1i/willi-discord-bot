@@ -18,7 +18,6 @@
 - [ ] User Info
 - [ ] Event handler
 - [ ] Music bot (Play from SoundCloud, YouTube, Spotify)
-- [ ] Test mute command
 - [ ] Add log for mute command
 - [ ] Set array for all commands
 
