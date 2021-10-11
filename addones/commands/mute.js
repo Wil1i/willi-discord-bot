@@ -7,6 +7,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "mute",
   description: "Test command",
+  permission: "manage_messages",
   execute(client, message) {
     message.delete();
     const config = guildConfig.get(client, message.guild);

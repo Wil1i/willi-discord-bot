@@ -9,16 +9,22 @@
 - [x] Set prefix to syntaxes
 - [x] Have a function for get detail of every guild (like color, prefix and ...)
 - [x] Fix permission for commands (some commands have not permission)
-- [ ] Kick , Ban Mute Commands
+- [x] Kick , Ban Mute Commands
 - [ ] Funny Commands
   - [ ] Joke
   - [ ] Wallpaper
   - [ ] Chistan
   - [ ] Password Generator
 - [ ] User Info
-- [ ] Test DM Command
-- [ ] Test Bug Command
 - [ ] Event handler
 - [ ] Music bot (Play from SoundCloud, YouTube, Spotify)
 - [ ] Test mute command
 - [ ] Add log for mute command
+- [ ] Set array for all commands
+
+- [ ] Test Commands
+  - [ ] Test DM Command
+  - [ ] Test Bug Command
+  - [ ] Test Kick Command
+  - [ ] Test Ban Command
+  - [ ] Test Mute Command
