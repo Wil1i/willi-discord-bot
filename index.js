@@ -177,6 +177,9 @@ client.on("messageCreate", (message) => {
   // when command is private is only use for developers
   if (commandDetail.private) return;
 
+  // if user is muted by bot, don't run any commands (except for developer)
+  if (db.has(`mute.${message.author.id}`)) return;
+
   // If command have permission
   if (commandDetail.permission) {
     const hasPermission = require("./addones/configItems/permission").get(
@@ -206,6 +209,11 @@ client.on("messageCreate", (message) => {
     return;
 
   commandDetail.execute(client, message);
+});
+
+// Handle Chats (mute users and..)
+client.on("messageCreate", (message) => {
+  client.events.get("messageCreate").execute(client, message);
 });
 
 // Interaction handler
