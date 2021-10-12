@@ -1,6 +1,6 @@
 const guildConfig = require("../configItems/guild");
 const db = require("quick.db");
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, WebhookClient, DiscordAPIError } = require("discord.js");
 
 // ?mute @usermention reason
 
@@ -42,6 +42,23 @@ module.exports = {
               `${userMention.username} Muted`,
               userMention.displayAvatarURL({ dynamic: true })
             );
+          if (db.has(`mute_${message.guild.id}`)) {
+            const webhook = new WebhookClient({
+              url: db.get(`mute_${message.guild.id}`),
+            });
+            const embed = new MessageEmbed()
+              .setColor(color)
+              .setFooter(client.user.username, client.user.displayAvatarURL())
+              .setAuthor(`Mute Log`, userMention.displayAvatarURL())
+              .setDescription(
+                `**<@${userMention.id}> Muted.**\n\n**Muted by**: <@${message.author.id}> (${message.author.tag})\n**Reason**: ${reason}`
+              );
+            webhook.send({
+              username: client.user.username,
+              avatarURL: client.user.displayAvatarURL(),
+              embeds: [embed],
+            });
+          }
         } else {
           muteEmbed.setDescription(
             `**SYNTAX**: ${prefix}${this.name} ${this.array}`

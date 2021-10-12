@@ -28,6 +28,7 @@ module.exports = {
       left: "leftlog",
 
       "message-delete": "messageDelete",
+      mute: "mute",
     };
 
     // Color setting for embed

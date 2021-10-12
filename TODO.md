@@ -18,8 +18,8 @@
 - [x] User Info
 - [ ] Event handler
 - [ ] Music bot (Play from SoundCloud, YouTube, Spotify)
-- [ ] Add log for mute command
-- [ ] Set array for all commands
+- [x] Add log for mute command
+- [x] Set array for all commands
 
 - [ ] Test Commands
   - [ ] Test DM Command
