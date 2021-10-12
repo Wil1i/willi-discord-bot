@@ -15,7 +15,7 @@
   - [ ] Wallpaper
   - [ ] Chistan
   - [ ] Password Generator
-- [ ] User Info
+- [x] User Info
 - [ ] Event handler
 - [ ] Music bot (Play from SoundCloud, YouTube, Spotify)
 - [ ] Add log for mute command
