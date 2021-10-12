@@ -5,6 +5,7 @@ module.exports = {
   name: "announce",
   description: "Send a announcement",
   permission: "administrator",
+  array: "[Announcement Text]",
   execute(client, message) {
     message.delete();
 
@@ -23,9 +24,7 @@ module.exports = {
         .setAuthor("Announcement", message.guild.iconURL())
         .setDescription(message.content.replace(messageArry[0], ""));
     } else {
-      embed.setDescription(
-        `**SYNTAX**: ${prefix}${this.name} [Announcement Text]`
-      );
+      embed.setDescription(`**SYNTAX**: ${prefix}${this.name} ${this.array}`);
     }
 
     message.channel.send({ embeds: [embed], content: "@everyone" });

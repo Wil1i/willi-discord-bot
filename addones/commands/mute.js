@@ -8,6 +8,7 @@ module.exports = {
   name: "mute",
   description: "Test command",
   permission: "manage_messages",
+  array: "[Mention] [Reason]",
   execute(client, message) {
     message.delete();
     const config = guildConfig.get(client, message.guild);
@@ -43,7 +44,7 @@ module.exports = {
             );
         } else {
           muteEmbed.setDescription(
-            `**SYNTAX**: ${prefix}${this.name} [Mention] [Reason]`
+            `**SYNTAX**: ${prefix}${this.name} ${this.array}`
           );
         }
       } else {
@@ -54,7 +55,7 @@ module.exports = {
       }
     } else {
       muteEmbed.setDescription(
-        `**SYNTAX**: ${prefix}${this.name} [Mention] [Reason]`
+        `**SYNTAX**: ${prefix}${this.name} ${this.array}`
       );
     }
     message.channel.send({ embeds: [muteEmbed] });

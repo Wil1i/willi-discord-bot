@@ -7,6 +7,8 @@ module.exports = {
   name: "setting",
   description: "All setting about bot",
   permission: "administrator",
+  array:
+    "[Key (set , delete , reset)] [SubKey (join , left , channel-delete)] [Value (Webhook Link or something)]",
   execute(client, message) {
     // Any settings a user can change
     const availableSetting = {
@@ -72,9 +74,7 @@ module.exports = {
         embed.setDescription(`Can't find this setting.`);
       }
     } else {
-      embed.setDescription(
-        `**SYNTAX** : ${prefix}${this.name} [Key (set , delete , reset)] [SubKey (join , left , channel-delete)] [Value (Webhook Link or something)]`
-      );
+      embed.setDescription(`**SYNTAX** : ${prefix}${this.name} ${this.array}`);
     }
 
     message.channel.send({ embeds: [embed] });

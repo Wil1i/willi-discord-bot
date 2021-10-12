@@ -5,6 +5,7 @@ module.exports = {
   name: "dm",
   description: "Send message to user dm",
   private: "true",
+  array: "[UserMention] [Text]",
   execute(client, message) {
     const guildConfigs = guildConfig.get(client, message.guild);
     let color = guildConfigs.color;
@@ -35,9 +36,7 @@ module.exports = {
           embed.setDescription(`Can't send message to user ${userMention}`);
         });
     } else {
-      embed.setDescription(
-        `**SYNTAX**: ${prefix}${this.name} [UserMention] [Text]`
-      );
+      embed.setDescription(`**SYNTAX**: ${prefix}${this.name} ${this.array}`);
     }
     message.channel.send(embed);
   },

@@ -4,6 +4,8 @@ const guildConfig = require("../configItems/guild");
 
 module.exports = {
   name: "wish",
+  description: "Have your wishlist and share it with your friends",
+  array: "[SET/DEL/Mention] {[Item Name] [Link]}",
   execute(client, message) {
     const guildConfigs = guildConfig.get(client, message.guild);
     let color = guildConfigs.color;
@@ -85,7 +87,7 @@ module.exports = {
           });
         } else {
           wishEmbed.setDescription(
-            `**SYNTAX**: ${prefix}${this.name} [SET] [Item Name] [Item Link]`
+            `**SYNTAX**: ${prefix}${this.name} ${this.array}`
           );
         }
       } else if (messageArry[1].toLowerCase() == "del") {
@@ -120,7 +122,7 @@ module.exports = {
         );
       } else {
         wishEmbed.setDescription(
-          `**SYNTAX**: ${prefix}${this.name} [SET/DEL/Mention] {[Item Name] [Link]}`
+          `**SYNTAX**: ${prefix}${this.name} ${this.array}`
         );
       }
     } else {

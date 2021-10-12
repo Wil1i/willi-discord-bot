@@ -5,6 +5,7 @@ const config = require("../../config.json");
 module.exports = {
   name: "bug",
   description: "Report a bug from bot",
+  array: "[Bug Report]",
   execute(client, message) {
     const guildConfigs = guildConfig.get(client, message.guild);
     let color = guildConfigs.color;
@@ -36,7 +37,7 @@ module.exports = {
         });
     } else {
       reportEmbed.setDescription(
-        `**SYNTAX**: ${prefix}${this.name} [About Bug]`
+        `**SYNTAX**: ${prefix}${this.name} ${this.array}`
       );
     }
     message.channel.send(reportEmbed);

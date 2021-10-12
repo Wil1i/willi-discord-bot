@@ -6,6 +6,8 @@ module.exports = {
   name: "config",
   description: "Config bot",
   private: "true",
+  array:
+    "[Key (set , delete , reset)] [SubKey (join , left , channel-delete)] [Value (Webhook Link or something)]",
   execute(client, message) {
     const availableSetting = {
       prefix: "prefix",
@@ -57,9 +59,7 @@ module.exports = {
         embed.setDescription(`Can't find this setting.`);
       }
     } else {
-      embed.setDescription(
-        `**SYNTAX** : ${prefix}${this.name} [Key (set , delete , reset)] [SubKey (join , left , channel-delete)] [Value (Webhook Link or something)]`
-      );
+      embed.setDescription(`**SYNTAX** : ${prefix}${this.name} ${this.array}`);
     }
 
     message.channel.send({ embeds: [embed] });
