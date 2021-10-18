@@ -20,6 +20,7 @@
 - [ ] Music bot (Play from SoundCloud, YouTube, Spotify)
 - [x] Add log for mute command
 - [x] Set array for all commands
+- [ ] Complete roleUpdate event
 
 - [ ] Test Commands
   - [ ] Test DM Command

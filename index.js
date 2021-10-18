@@ -281,9 +281,17 @@ client.on("messageDelete", (message) => {
   client.events.get("messageDelete").execute(client, message);
 });
 
-// client.on("roleCreate")
-// client.on("roleDelete")
-// client.on("roleUpdate")
+client.on("roleCreate", (role) => {
+  client.events.get("roleCreate").execute(client, role);
+});
+
+client.on("roleDelete", (role) => {
+  client.events.get("roleDelete").execute(client, role);
+});
+
+client.on("roleUpdate", (role) => {
+  client.events.get("roleUpdate").execute(client, oldRole, newRole);
+});
 // client.on("guildMemberUpdate")
 // client.on("guildUpdate")
 // client.on("voiceStateUpdate")
