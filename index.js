@@ -5,6 +5,7 @@ console.log(
   green("Importing librarys and config first files...")
 );
 
+const permission = require("./addones/configItems/permission");
 const Discord = require("discord.js");
 const config = require("./config.json");
 const fs = require("fs");
@@ -182,11 +183,9 @@ client.on("messageCreate", (message) => {
 
   // If command have permission
   if (commandDetail.permission) {
-    const hasPermission = require("./addones/configItems/permission").get(
-      message,
-      commandDetail.permission.toUpperCase()
-    );
-    if (!hasPermission) return;
+    const userPermission = permission.get(message);
+    commandDetail.permission.toUpperCase();
+    if (!userPermission[commandDetail.permission.toUpperCase()]) return;
   }
 
   // If command have rank

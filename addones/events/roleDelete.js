@@ -5,7 +5,7 @@ const guildConfig = require("../configItems/guild");
 module.exports = {
   name: "guildDelete",
   description: "Handle when role deleted",
-  execute(client, role) {
+  async execute(client, role) {
     if (!db.has(`role_${role.guild.id}`)) return;
 
     let Entry = NaN;

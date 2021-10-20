@@ -5,7 +5,7 @@ const guildConfig = require("../configItems/guild");
 module.exports = {
   name: "roleUpdate",
   description: "Handle when a role changed",
-  execute(client, oldRole, newRole) {
+  async execute(client, oldRole, newRole) {
     if (!db.has(`role_${newRole.guild.id}`)) return;
     let sendable = false;
 

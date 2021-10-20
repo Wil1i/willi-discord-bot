@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
   name: "permission",
   description: "Calculate permissions",
-  get(message, targetPermission) {
+  get(message) {
     const s = {
       ADMINISTRATOR: message.member.permissions.has(
         Discord.Permissions.FLAGS.ADMINISTRATOR
@@ -114,8 +114,6 @@ module.exports = {
       ),
     };
 
-    if (s.hasOwnProperty(targetPermission.toUpperCase())) {
-      return s[targetPermission.toUpperCase()];
-    } else return null;
+    return s;
   },
 };

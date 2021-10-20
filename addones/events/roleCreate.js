@@ -5,7 +5,7 @@ const guildConfig = require("../configItems/guild");
 module.exports = {
   name: "roleCreate",
   description: "Handle when a role created",
-  execute(client, role) {
+  async execute(client, role) {
     if (!db.has(`role_${role.guild.id}`)) return;
 
     let Entry = NaN;
